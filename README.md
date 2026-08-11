@@ -39,16 +39,43 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **3-4 Handling Server Errors and 404s**: `app/error.vue` is the custom error page, reading `useError()`'s `error` prop and calling `clearError({ redirect: '/' })`
 - **3-5 Route Validation**: `app/pages/categories/[category].vue` and `[recipe].vue` use `definePageMeta({ validate })` instead of manually throwing `createError()` in the component body
 
-## Develop
+### Chapter 4 Route Middleware and Authentication
+
+- **4-1 Route Middleware Basics**: `app/middleware/auth.ts` runs before entering a protected route and can redirect before the page even renders
+- **4-2 Creating a Login Page**: `app/pages/login.vue`
+- **4-3 Inline, Named, and Global Route Middleware**: `auth.ts` is a *named* middleware (lives in `app/middleware/`, applied per-page), not inline or global, since only one route pattern needs it
+- **4-4 Setting Up Supabase**: `@nuxtjs/supabase` module registered in `nuxt.config.ts`, see Setup below for creating your own project
+- **4-5 Adding Environment Variables**: `.env.example` documents `NUXT_PUBLIC_SUPABASE_URL` / `NUXT_PUBLIC_SUPABASE_KEY`; real values go in a local `.env` (gitignored, never committed)
+- **4-6 Logging in with GitHub**: `app/pages/login.vue` calls `useSupabaseClient().auth.signInWithOAuth({ provider: 'github' })`
+- **4-7 Logging Out**: `app/layouts/default.vue` sidebar footer, `supabase.auth.signOut()`
+- **4-8 Protecting Routes with Auth**: `app/pages/categories/[category]/[recipe].vue` sets `middleware: 'auth'` in `definePageMeta`, so recipe detail pages require login while browsing categories stays public; the middleware also redirects back to the page you were trying to reach after login (`?redirect=` query param, read in `login.vue`/`confirm.vue`)
+- **4-9 Understanding OAuth Basics**: no new code, covered by using Supabase's GitHub provider instead of building session/password handling ourselves
+
+## Setup
 
 ```bash
 npm install
+cp .env.example .env
+```
+
+Then fill in `.env` with your own Supabase project:
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. **Project Settings → Data API** for the project URL, **Project Settings → API Keys** for the publishable key
+3. Create a GitHub OAuth app at [github.com/settings/developers](https://github.com/settings/developers), callback URL `https://<project-ref>.supabase.co/auth/v1/callback`
+4. In Supabase: **Authentication → Providers → GitHub**, paste the GitHub app's Client ID and Client Secret
+
+`.env` is gitignored and never committed; only `.env.example` (placeholder names, no real values) is tracked.
+
+## Develop
+
+```bash
 npm run dev
 ```
 
 ## Deploy to Netlify
 
-Nitro (Nuxt's server engine) zero-config-detects Netlify at build time — no `netlify.toml` needed. Push this repo to GitHub, connect it on [netlify.com](https://www.netlify.com/), and use:
+Nitro (Nuxt's server engine) detects Netlify automatically at build time, so no `netlify.toml` is needed. Push this repo to GitHub, connect it on [netlify.com](https://www.netlify.com/), and use:
 
 - Build command: `npm run build`
 - Netlify auto-detects the Nuxt output; no publish directory override needed

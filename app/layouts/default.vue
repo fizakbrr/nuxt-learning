@@ -1,16 +1,23 @@
 <script setup lang="ts">
 const { categories } = useRecipes()
+const user = useSupabaseUser()
+const supabase = useSupabaseClient()
+
+const logout = async () => {
+  await supabase.auth.signOut()
+  navigateTo('/')
+}
 </script>
 
 <template>
   <div class="flex min-h-screen bg-slate-50 text-slate-900">
-    <aside class="w-64 shrink-0 border-r border-slate-200 bg-white">
+    <aside class="flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div class="p-4">
         <NuxtLink to="/" class="font-semibold" active-class="text-emerald-600">
           Home Cookbook
         </NuxtLink>
       </div>
-      <nav class="space-y-1 px-4 pb-6">
+      <nav class="flex-1 space-y-1 px-4 pb-6">
         <NuxtLink
           v-for="category in categories"
           :key="category.slug"
@@ -21,6 +28,24 @@ const { categories } = useRecipes()
           {{ category.title }}
         </NuxtLink>
       </nav>
+      <ClientOnly>
+        <div class="border-t border-slate-200 p-4">
+          <NuxtLink
+            v-if="!user"
+            to="/login"
+            class="block text-sm text-slate-600 hover:text-slate-900"
+          >
+            Login
+          </NuxtLink>
+          <button
+            v-else
+            class="text-sm text-slate-600 hover:text-slate-900"
+            @click="logout"
+          >
+            Logout
+          </button>
+        </div>
+      </ClientOnly>
     </aside>
     <main class="flex-1 px-8 py-8">
       <div class="mx-auto max-w-2xl">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({
+  middleware: 'auth',
   validate: (route) => {
     const { getRecipe } = useRecipes()
     return !!getRecipe(route.params.category as string, route.params.recipe as string)
