@@ -6,7 +6,7 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 
 ## Concepts from the course, applied here
 
-### Chapter 1 — Building Our MVP
+### Chapter 1 Building Our MVP
 
 - **1-1 File Based Routing**: `app/pages/index.vue`, `app/pages/categories/index.vue`
 - **1-2 Displaying Course Lessons** (here: displaying recipes): `app/pages/categories/index.vue`, `app/composables/useRecipes.ts`
@@ -23,7 +23,7 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **1-13 Save Course Progress with VueUse and ClientOnly** (here: save favorites): `app/composables/useFavorites.ts` uses VueUse's `useLocalStorage`, wrapped in `<ClientOnly>` where rendered
 - **1-14 Deploying our MVP to Netlify**: see Deploy section below
 
-### Chapter 2 — Architecture and Organizing Our Code
+### Chapter 2 Architecture and Organizing Our Code
 
 - **2-1 Smaller is Better**: recipe page split into `app/components/IngredientList.vue` / `StepList.vue` instead of one big page
 - **2-2 Understanding App.vue**: `app/app.vue` is just `<NuxtLayout><NuxtPage /></NuxtLayout>`
@@ -31,7 +31,7 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **2-4 Pages vs Layouts vs Components**: shell lives in the layout, shared lookups live in composables, repeated markup lives in components (see files above)
 - **2-5 Understanding Composables in Nuxt**: `app/composables/useCurrentCategory.ts` and `useCurrentRecipe.ts` combine `useRoute()` with `useRecipes()`, alongside the data composable (`useRecipes.ts`) and the state composable (`useFavorites.ts`)
 
-### Chapter 3 — Making Our App Robust
+### Chapter 3 Making Our App Robust
 
 - **3-1 Adding in TypeScript**: `app/composables/useRecipes.ts` defines `Recipe`/`Category` types, used across every page and composable that touches recipe data
 - **3-2 Handling Client-Side Errors with NuxtErrorBoundary**: `app/pages/categories/[category]/[recipe].vue` wraps the favorite button in `<NuxtErrorBoundary>` (localStorage writes can genuinely throw, e.g. Safari private mode)
