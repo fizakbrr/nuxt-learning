@@ -1,11 +1,6 @@
 <script setup lang="ts">
-const route = useRoute()
-const { getRecipe } = useRecipes()
+const recipe = useCurrentRecipe()
 const { isFavorite, toggleFavorite } = useFavorites()
-
-const categorySlug = computed(() => route.params.category as string)
-const recipeSlug = computed(() => route.params.recipe as string)
-const recipe = computed(() => getRecipe(categorySlug.value, recipeSlug.value))
 
 if (!recipe.value) {
   throw createError({ statusCode: 404, statusMessage: 'Recipe not found' })
@@ -22,19 +17,8 @@ useHead({ title: () => recipe.value?.title ?? 'Recipe' })
     </div>
     <p class="text-slate-600">{{ recipe.description }}</p>
 
-    <div>
-      <h3 class="mb-2 font-medium">Ingredients</h3>
-      <ul class="list-disc space-y-1 pl-5 text-sm text-slate-700">
-        <li v-for="ingredient in recipe.ingredients" :key="ingredient">{{ ingredient }}</li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 class="mb-2 font-medium">Steps</h3>
-      <ol class="list-decimal space-y-1 pl-5 text-sm text-slate-700">
-        <li v-for="step in recipe.steps" :key="step">{{ step }}</li>
-      </ol>
-    </div>
+    <IngredientList :ingredients="recipe.ingredients" />
+    <StepList :steps="recipe.steps" />
 
     <ClientOnly>
       <button

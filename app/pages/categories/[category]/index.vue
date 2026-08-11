@@ -1,9 +1,6 @@
 <script setup lang="ts">
-const route = useRoute()
-const { getCategory } = useRecipes()
+const category = useCurrentCategory()
 const { isFavorite } = useFavorites()
-
-const category = computed(() => getCategory(route.params.category as string))
 </script>
 
 <template>

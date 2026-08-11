@@ -1,8 +1,5 @@
 <script setup lang="ts">
-const route = useRoute()
-const { getCategory } = useRecipes()
-
-const category = computed(() => getCategory(route.params.category as string))
+const category = useCurrentCategory()
 
 if (!category.value) {
   throw createError({ statusCode: 404, statusMessage: 'Category not found' })

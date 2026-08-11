@@ -11,10 +11,13 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **Dynamic routes**: `app/pages/categories/[category].vue`, `app/pages/categories/[category]/[recipe].vue`
 - **Loading local data**: `app/data/recipes.json` read through `app/composables/useRecipes.ts`
 - **Components**: `app/components/RecipeCard.vue`
-- **NuxtLink + active-class**: sidebar nav and recipe cards in `app/app.vue`, `app/components/RecipeCard.vue`
+- **NuxtLink + active-class**: sidebar nav in `app/layouts/default.vue`, recipe cards in `app/components/RecipeCard.vue`
 - **useHead**: reactive page titles in every page under `app/pages/`
 - **useState / VueUse**: `app/composables/useFavorites.ts` uses VueUse's `useLocalStorage` to persist favorited recipes across reloads, wrapped in `<ClientOnly>` where rendered
 - **Universal rendering**: the app SSRs by default; `ClientOnly` is used only where localStorage state can't be known on the server
+- **Layouts**: `app/layouts/default.vue` holds the sidebar shell; `app/app.vue` is just `<NuxtLayout><NuxtPage /></NuxtLayout>`
+- **Smaller components over big pages**: `app/pages/categories/[category]/[recipe].vue` delegates to `app/components/IngredientList.vue` and `app/components/StepList.vue` instead of inlining that markup
+- **Composables that combine other composables**: `app/composables/useCurrentCategory.ts` and `useCurrentRecipe.ts` wrap `useRoute()` + `useRecipes()` so every page that needs "the category/recipe for this URL" shares one implementation instead of repeating the lookup
 
 ## Develop
 
