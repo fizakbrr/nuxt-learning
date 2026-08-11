@@ -1,0 +1,104 @@
+[
+  {
+    "slug": "the-big-picture",
+    "title": "Nuxt 3: The Big Picture",
+    "lessons": [
+      {
+        "slug": "1-1-file-based-routing",
+        "title": "1-1 File Based Routing",
+        "description": "In this lesson, we'll learn how to use Nuxt to create routes in our app. We'll see how Nuxt automatically turns our files and directories into routes using Vue Router.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-2-displaying-course-lessons",
+        "title": "1-2 Displaying Course Lessons",
+        "description": "In this lesson we figure out how we want to set up our routes in order to show course lessons. We'll discuss what makes a good route, and outline how we'll implement it.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-3-nested-routes",
+        "title": "1-3 Nested Routes",
+        "description": "In this lesson, we'll learn how we can use nested routes to create powerful app hierarchies. We'll separate out the logic for displaying a lesson into it's own child page.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-4-dynamic-routes",
+        "title": "1-4 Dynamic Routes",
+        "description": "In this lesson, we'll explore dynamic routes in Nuxt. This will let us navigate to any chapter and lesson in our course. We'll also see all the different ways we can use dynamic routes to create complex routing.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-5-loading-in-course-data",
+        "title": "1-5 Loading in Course Data",
+        "description": "In this lesson we'll hook up some actual data so we have something more substantial to work with. We'll also see how to use nuxi to generate files for us.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-6-update-lesson-styling",
+        "title": "1-6 Update Lesson Styling",
+        "description": "In this lesson, we'll update the styling of our page. We'll do this quickly so we can get back to learning about Nuxt 3.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-7-add-videoplayer-component",
+        "title": "1-7 Add VideoPlayer Component",
+        "description": "In this lesson we'll see how we can use Components in Nuxt 3. We'll add in a VideoPlayer component that lets us embed our course lesson videos from Vimeo.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-8-what-is-universal-rendering",
+        "title": "1-8 What is Universal Rendering?",
+        "description": "In this lesson we do a deep dive into how Nuxt renders our apps. We'll take some time to understand how Universal rendering works, and why it gives us the best of SPA and SSR.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-9-navigating-with-nuxtlink",
+        "title": "1-9 Navigating with NuxtLink",
+        "description": "In this lesson we'll see how and why NuxtLink is so useful. We'll update the navigation of our app to be more efficient, and dig into what NuxtLink is actually doing for us.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-10-more-with-nuxtlink",
+        "title": "1-10 More with NuxtLink",
+        "description": "In this lesson we'll learn a few more things about NuxtLink. We'll use it for external links, and update our styling so the app shows which link is currently active.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-11-the-usehead-composable",
+        "title": "1-11 The useHead composable",
+        "description": "In this lesson, we'll investigate the useHead to reactively set the title of our page.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-12-tracking-progress-with-usestate",
+        "title": "1-12 Tracking progress with useState",
+        "description": "In this lesson, we'll dip our toes into state management with useState. We'll see how we can use it to track state across our app, and why we'd use it instead of ref.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-13-save-course-progress-with-vueuse-and-the-clientonly-component",
+        "title": "1-13 Save Course Progress with VueUse and the ClientOnly Component",
+        "description": "In this lesson, we'll see how we can work with third-party modules. We'll use VueUse to help us store our state in localStorage. Then we'll dive into understanding the ClientOnly component, why we'd want to use it, and a convenient alternative.",
+        "videoId": 76979871
+      },
+      {
+        "slug": "1-14-deploying-our-mvp-to-netlify",
+        "title": "1-14 Deploying our MVP to Netlify",
+        "description": "In this lesson, we'll see how we can deploy our app using Netlify. From this point on, you'll be able to deploy your app whenever you want throughout the course.",
+        "videoId": 76979871
+      }
+    ]
+  },
+  {
+    "slug": "sample-chapter-two",
+    "title": "Sample Chapter Two (placeholder)",
+    "lessons": [
+      {
+        "slug": "2-1-placeholder-lesson",
+        "title": "2-1 Placeholder Lesson",
+        "description": "Placeholder lesson to prove chapter/lesson nesting works with more than one chapter. Replace with real data.",
+        "videoId": 76979871
+      }
+    ]
+  }
+]
