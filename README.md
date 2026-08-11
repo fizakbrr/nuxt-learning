@@ -1,6 +1,6 @@
 # Home Cookbook
 
-A small recipe app, built to apply what I learned from Vue Mastery's [Nuxt 3: The Big Picture](https://www.vuemastery.com/courses/nuxt3-the-big-picture/) course. Scaffolded with the latest Nuxt (v4) and Vue (3.5+).
+A small recipe app, built to apply what I learned from Vue Mastery's Nuxt 3 course. Scaffolded with the latest Nuxt (v4) and Vue (3.5+).
 
 Browse recipes by category, view ingredients/steps for each one, and save favorites (persisted in localStorage).
 
