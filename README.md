@@ -6,7 +6,7 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 
 ## Concepts from the course, applied here
 
-### Chapter 1 — The Big Picture
+### Chapter 1 — Building Our MVP
 
 - **1-1 File Based Routing**: `app/pages/index.vue`, `app/pages/categories/index.vue`
 - **1-2 Displaying Course Lessons** (here: displaying recipes): `app/pages/categories/index.vue`, `app/composables/useRecipes.ts`
