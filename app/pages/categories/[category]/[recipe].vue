@@ -1,10 +1,13 @@
 <script setup lang="ts">
+definePageMeta({
+  validate: (route) => {
+    const { getRecipe } = useRecipes()
+    return !!getRecipe(route.params.category as string, route.params.recipe as string)
+  }
+})
+
 const recipe = useCurrentRecipe()
 const { isFavorite, toggleFavorite } = useFavorites()
-
-if (!recipe.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Recipe not found' })
-}
 
 useHead({ title: () => recipe.value?.title ?? 'Recipe' })
 </script>
@@ -21,12 +24,20 @@ useHead({ title: () => recipe.value?.title ?? 'Recipe' })
     <StepList :steps="recipe.steps" />
 
     <ClientOnly>
-      <button
-        class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
-        @click="toggleFavorite(recipe.slug)"
-      >
-        {{ isFavorite(recipe.slug) ? 'Remove favorite' : 'Save favorite' }}
-      </button>
+      <NuxtErrorBoundary>
+        <button
+          class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+          @click="toggleFavorite(recipe.slug)"
+        >
+          {{ isFavorite(recipe.slug) ? 'Remove favorite' : 'Save favorite' }}
+        </button>
+        <template #error="{ error, clearError }">
+          <p class="text-sm text-red-600">
+            Couldn't save favorites ({{ error.message }}).
+            <button class="underline" @click="clearError">Try again</button>
+          </p>
+        </template>
+      </NuxtErrorBoundary>
     </ClientOnly>
   </div>
 </template>

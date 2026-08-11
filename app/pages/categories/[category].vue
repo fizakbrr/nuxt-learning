@@ -1,11 +1,14 @@
 <script setup lang="ts">
+definePageMeta({
+  validate: (route) => {
+    const { getCategory } = useRecipes()
+    return !!getCategory(route.params.category as string)
+  }
+})
+
 const category = useCurrentCategory()
 
-if (!category.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Category not found' })
-}
-
-useHead({ title: category.value.title })
+useHead({ title: () => category.value?.title ?? 'Category' })
 </script>
 
 <template>

@@ -31,6 +31,14 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **2-4 Pages vs Layouts vs Components**: shell lives in the layout, shared lookups live in composables, repeated markup lives in components (see files above)
 - **2-5 Understanding Composables in Nuxt**: `app/composables/useCurrentCategory.ts` and `useCurrentRecipe.ts` combine `useRoute()` with `useRecipes()`, alongside the data composable (`useRecipes.ts`) and the state composable (`useFavorites.ts`)
 
+### Chapter 3 — Making Our App Robust
+
+- **3-1 Adding in TypeScript**: `app/composables/useRecipes.ts` defines `Recipe`/`Category` types, used across every page and composable that touches recipe data
+- **3-2 Handling Client-Side Errors with NuxtErrorBoundary**: `app/pages/categories/[category]/[recipe].vue` wraps the favorite button in `<NuxtErrorBoundary>` (localStorage writes can genuinely throw, e.g. Safari private mode)
+- **3-3 Advanced Error Handling**: the boundary's `#error` slot shows the error message with a "Try again" button that calls `clearError()`
+- **3-4 Handling Server Errors and 404s**: `app/error.vue` is the custom error page, reading `useError()`'s `error` prop and calling `clearError({ redirect: '/' })`
+- **3-5 Route Validation**: `app/pages/categories/[category].vue` and `[recipe].vue` use `definePageMeta({ validate })` instead of manually throwing `createError()` in the component body
+
 ## Develop
 
 ```bash
