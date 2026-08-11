@@ -1,18 +1,13 @@
 <script setup lang="ts">
-useHead({ title: 'Nuxt Course' })
+useHead({ title: 'Home Cookbook' })
 </script>
 
 <template>
   <div class="prose max-w-none">
-    <h1>Nuxt 3: The Big Picture</h1>
-    <p>
-      Course notes and demo app built while following Vue Mastery's
-      <a href="https://www.vuemastery.com/courses/nuxt3-the-big-picture/" target="_blank" rel="noopener">
-        Nuxt 3: The Big Picture
-      </a>.
-    </p>
-    <NuxtLink to="/chapters" class="text-indigo-600 no-underline hover:underline">
-      Browse chapters &rarr;
+    <h1>Home Cookbook</h1>
+    <p>A small recipe collection, organized by category.</p>
+    <NuxtLink to="/categories" class="text-emerald-600 no-underline hover:underline">
+      Browse categories &rarr;
     </NuxtLink>
   </div>
 </template>

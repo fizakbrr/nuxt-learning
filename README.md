@@ -1,28 +1,20 @@
-# Nuxt 3: The Big Picture — course app
+# Home Cookbook
 
-Demo app built while following Vue Mastery's [Nuxt 3: The Big Picture](https://www.vuemastery.com/courses/nuxt3-the-big-picture/).
-Scaffolded with the latest Nuxt (v4) and Vue (3.5+) instead of the course's exact Nuxt 3.x pin — the concepts carry over unchanged.
+A small recipe app, built to apply what I learned from Vue Mastery's [Nuxt 3: The Big Picture](https://www.vuemastery.com/courses/nuxt3-the-big-picture/) course. Scaffolded with the latest Nuxt (v4) and Vue (3.5+).
 
-Course lesson/chapter data (`app/data/course.json`) is placeholder: titles/descriptions come from the course's lesson list, but every `videoId` is a stand-in Vimeo ID (`76979871`). Swap in the real Vimeo video IDs once you have them.
+Browse recipes by category, view ingredients/steps for each one, and save favorites (persisted in localStorage).
 
-## Lesson -> code map
+## Concepts from the course, applied here
 
-| Lesson | Where it lives |
-|---|---|
-| 1-1 File Based Routing | `app/pages/index.vue`, `app/pages/chapters/index.vue` |
-| 1-2 Displaying Course Lessons | `app/pages/chapters/index.vue`, `app/data/course.json` |
-| 1-3 Nested Routes | `app/pages/chapters/[chapter].vue` (parent) + `app/pages/chapters/[chapter]/index.vue` (child) |
-| 1-4 Dynamic Routes | `app/pages/chapters/[chapter].vue`, `app/pages/chapters/[chapter]/[lesson].vue` |
-| 1-5 Loading in Course Data | `app/data/course.json`, `app/composables/useCourse.ts` |
-| 1-6 Update Lesson Styling | Tailwind classes across `app/pages/**`, `app/app.vue` |
-| 1-7 Add VideoPlayer Component | `app/components/VideoPlayer.vue` |
-| 1-8 What is Universal Rendering? | No new code — the whole app SSRs by default; `ClientOnly` is used only where localStorage state (lesson 1-13) requires client-only rendering |
-| 1-9 Navigating with NuxtLink | `app/app.vue`, all page links |
-| 1-10 More with NuxtLink | `app/app.vue` (`active-class`, external Vue Mastery link) |
-| 1-11 The useHead composable | `useHead()` calls in `app/pages/index.vue`, `app/pages/chapters/[chapter].vue`, `app/pages/chapters/[chapter]/[lesson].vue` |
-| 1-12 Tracking progress with useState | Superseded by 1-13's `useLocalStorage`, see `app/composables/useProgress.ts` comment |
-| 1-13 Save Course Progress with VueUse and ClientOnly | `app/composables/useProgress.ts` (`useLocalStorage`), `<ClientOnly>` wrapping progress UI in `app/pages/chapters/[chapter]/index.vue` and `[lesson].vue` |
-| 1-14 Deploying our MVP to Netlify | See below |
+- **File-based routing**: `app/pages/index.vue`, `app/pages/categories/index.vue`
+- **Nested routes**: `app/pages/categories/[category].vue` (parent, renders `<NuxtPage />`) + `app/pages/categories/[category]/index.vue` (child)
+- **Dynamic routes**: `app/pages/categories/[category].vue`, `app/pages/categories/[category]/[recipe].vue`
+- **Loading local data**: `app/data/recipes.json` read through `app/composables/useRecipes.ts`
+- **Components**: `app/components/RecipeCard.vue`
+- **NuxtLink + active-class**: sidebar nav and recipe cards in `app/app.vue`, `app/components/RecipeCard.vue`
+- **useHead**: reactive page titles in every page under `app/pages/`
+- **useState / VueUse**: `app/composables/useFavorites.ts` uses VueUse's `useLocalStorage` to persist favorited recipes across reloads, wrapped in `<ClientOnly>` where rendered
+- **Universal rendering**: the app SSRs by default; `ClientOnly` is used only where localStorage state can't be known on the server
 
 ## Develop
 
