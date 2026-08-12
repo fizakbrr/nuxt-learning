@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { categories } = useRecipes()
+const { data: categories } = useCategories()
 
 useHead({ title: 'Categories' })
 </script>
@@ -15,7 +15,7 @@ useHead({ title: 'Categories' })
         >
           <span class="font-medium">{{ category.title }}</span>
           <span class="ml-2 text-sm text-slate-500">
-            {{ category.recipes.length }} recipes
+            {{ category.recipeCount }} recipes
           </span>
         </NuxtLink>
       </li>

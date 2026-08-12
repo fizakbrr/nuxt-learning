@@ -9,10 +9,10 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 ### Chapter 1 Building Our MVP
 
 - **1-1 File Based Routing**: `app/pages/index.vue`, `app/pages/categories/index.vue`
-- **1-2 Displaying Course Lessons** (here: displaying recipes): `app/pages/categories/index.vue`, `app/composables/useRecipes.ts`
+- **1-2 Displaying Course Lessons** (here: displaying recipes): `app/pages/categories/index.vue`, `app/composables/useCategories.ts`
 - **1-3 Nested Routes**: `app/pages/categories/[category].vue` (parent, renders `<NuxtPage />`) + `app/pages/categories/[category]/index.vue` (child)
 - **1-4 Dynamic Routes**: `app/pages/categories/[category].vue`, `app/pages/categories/[category]/[recipe].vue`
-- **1-5 Loading in Course Data** (here: recipe data): `app/data/recipes.json` read through `app/composables/useRecipes.ts`
+- **1-5 Loading in Course Data** (here: recipe data): originally `app/data/recipes.json` read through a composable; since chapter 5, that same JSON seeds a real Postgres database instead
 - **1-6 Update Lesson Styling**: Tailwind classes throughout `app/pages/**`, `app/layouts/default.vue`
 - **1-7 Add VideoPlayer Component** (here: a different reusable component): `app/components/RecipeCard.vue`
 - **1-8 What is Universal Rendering?**: the app SSRs by default; `ClientOnly` is used only where localStorage state can't be known on the server
@@ -29,11 +29,11 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **2-2 Understanding App.vue**: `app/app.vue` is just `<NuxtLayout><NuxtPage /></NuxtLayout>`
 - **2-3 Understanding Layouts**: `app/layouts/default.vue` holds the sidebar shell
 - **2-4 Pages vs Layouts vs Components**: shell lives in the layout, shared lookups live in composables, repeated markup lives in components (see files above)
-- **2-5 Understanding Composables in Nuxt**: `app/composables/useCurrentCategory.ts` and `useCurrentRecipe.ts` combine `useRoute()` with `useRecipes()`, alongside the data composable (`useRecipes.ts`) and the state composable (`useFavorites.ts`)
+- **2-5 Understanding Composables in Nuxt**: `app/composables/useCurrentCategory.ts` and `useCurrentRecipe.ts` combine `useRoute()` with data fetching, alongside the data composable (`useCategories.ts`) and the state composable (`useFavorites.ts`)
 
 ### Chapter 3 Making Our App Robust
 
-- **3-1 Adding in TypeScript**: `app/composables/useRecipes.ts` defines `Recipe`/`Category` types, used across every page and composable that touches recipe data
+- **3-1 Adding in TypeScript**: `shared/types/recipe.ts` defines the `Recipe`/`CategoryMeta` types, used across every page, composable, and server route that touches recipe data
 - **3-2 Handling Client-Side Errors with NuxtErrorBoundary**: `app/pages/categories/[category]/[recipe].vue` wraps the favorite button in `<NuxtErrorBoundary>` (localStorage writes can genuinely throw, e.g. Safari private mode)
 - **3-3 Advanced Error Handling**: the boundary's `#error` slot shows the error message with a "Try again" button that calls `clearError()`
 - **3-4 Handling Server Errors and 404s**: `app/error.vue` is the custom error page, reading `useError()`'s `error` prop and calling `clearError({ redirect: '/' })`
@@ -51,6 +51,25 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **4-8 Protecting Routes with Auth**: `app/pages/categories/[category]/[recipe].vue` sets `middleware: 'auth'` in `definePageMeta`, so recipe detail pages require login while browsing categories stays public; the middleware also redirects back to the page you were trying to reach after login (`?redirect=` query param, read in `login.vue`/`confirm.vue`)
 - **4-9 Understanding OAuth Basics**: no new code, covered by using Supabase's GitHub provider instead of building session/password handling ourselves
 
+### Chapter 5 Server Routes
+
+- **5-1 Server Route Basics**: `server/api/categories.get.ts`, the first Nitro server route, lists categories with recipe counts
+- **5-2 Lesson Endpoint** (here: recipe endpoint): `server/api/categories/[category]/recipes.get.ts` and `server/api/categories/[category]/recipes/[recipe].get.ts`
+- **5-3 Fully Typing Our Endpoint**: `shared/types/recipe.ts` holds `RecipeSummary`, `Recipe`, `CategoryMeta`, and `CategoryWithRecipes`, auto-imported on both the client and server since it lives in Nuxt 4's `shared/` directory
+- **5-4 Course Metadata Endpoint** (here: category metadata): `server/api/categories.get.ts` returns lightweight category summaries, no ingredients or steps
+- **5-5 Basic Data Fetching**: `app/composables/useCurrentRecipe.ts` uses `useFetch` directly against the recipe endpoint
+- **5-6 Advanced Data Fetching**: covered by building the caching composable below instead of relying on removed built-in caching
+- **5-7 Creating the useFetchWithCache Composable**: `app/composables/useFetchWithCache.ts`, a generic `useFetch` wrapper with a client-only cache keyed by URL (client-only so Nitro's shared Node process never leaks one visitor's SSR response into another visitor's page)
+- **5-8 Fetch Course Metadata** (here: fetch category data): `app/composables/useCategories.ts` and `useCurrentCategory.ts` both use `useFetchWithCache`
+- **5-9 Setting up Prisma**: `prisma/schema.prisma`, connected to the Postgres database built into the same Supabase project used for auth
+- **5-10 Creating the Prisma Schema**: `Category` and `Recipe` models in `prisma/schema.prisma`, using slugs as natural primary keys since they're already the URL identifiers
+- **5-11 Initialize Prisma and Seed Database**: `prisma/seed.ts` reads `app/data/recipes.json` and upserts it into the database
+- **5-12 Getting Data from Prisma**: `server/utils/prisma.ts` is a singleton `PrismaClient`, imported by every server route
+- **5-13 Update Lesson Endpoint** (here: recipe endpoint): `server/api/categories/[category]/recipes/[recipe].get.ts` queries Prisma by the composite `categorySlug_slug` key
+- **5-14 Update Course Meta Endpoint** (here: category endpoint): `server/api/categories.get.ts` and `.../recipes.get.ts` both query Prisma instead of the old JSON file
+- **5-15 Auth and Server Routes**: the recipe endpoint calls `serverSupabaseUser(event)` and throws a 401 before touching the database if there's no session; kept as an inline check in that one handler rather than global server middleware, matching this project's existing "named/inline over global for a single route" pattern from chapter 4
+- **5-16 Understanding Nitro and h3**: no new code, `server/api/*.get.ts` files are h3 event handlers running on Nitro under the hood
+
 ## Setup
 
 ```bash
@@ -64,6 +83,8 @@ Then fill in `.env` with your own Supabase project:
 2. **Project Settings → Data API** for the project URL, **Project Settings → API Keys** for the publishable key
 3. Create a GitHub OAuth app at [github.com/settings/developers](https://github.com/settings/developers), callback URL `https://<project-ref>.supabase.co/auth/v1/callback`
 4. In Supabase: **Authentication → Providers → GitHub**, paste the GitHub app's Client ID and Client Secret
+5. In Supabase: **Connect → Direct connection** gives you `DIRECT_URL`; use the **Session pooler** variant instead of the raw direct host if your network doesn't support IPv6. **Connect → Transaction pooler** gives you `DATABASE_URL` (add `?pgbouncer=true` if it's not already appended)
+6. Run `npx prisma migrate dev` to create the tables, then `npx prisma db seed` to load the recipe data
 
 `.env` is gitignored and never committed; only `.env.example` (placeholder names, no real values) is tracked.
 

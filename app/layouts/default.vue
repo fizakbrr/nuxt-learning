@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { categories } = useRecipes()
+const { data: categories } = useCategories()
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 

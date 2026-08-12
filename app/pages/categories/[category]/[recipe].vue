@@ -1,14 +1,16 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'auth',
-  validate: (route) => {
-    const { getRecipe } = useRecipes()
-    return !!getRecipe(route.params.category as string, route.params.recipe as string)
-  }
+  middleware: 'auth'
 })
 
-const recipe = useCurrentRecipe()
+const { data: recipe, error } = useCurrentRecipe()
 const { isFavorite, toggleFavorite } = useFavorites()
+
+// 401 is handled by the auth middleware redirecting to /login before this
+// renders; this guard covers direct API errors (e.g. a 404 recipe slug).
+if (error.value && error.value.statusCode !== 401) {
+  throw createError({ statusCode: 404, statusMessage: 'Recipe not found', fatal: true })
+}
 
 useHead({ title: () => recipe.value?.title ?? 'Recipe' })
 </script>

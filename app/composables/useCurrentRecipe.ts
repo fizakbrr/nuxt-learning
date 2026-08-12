@@ -1,9 +1,9 @@
-// Combines useRoute() with useRecipes() so pages don't repeat the same lookup.
+// Not cached (unlike useCurrentCategory): this is the auth-protected endpoint,
+// and caching it would risk showing stale data after logout.
 export const useCurrentRecipe = () => {
   const route = useRoute()
-  const { getRecipe } = useRecipes()
+  const categorySlug = route.params.category as string
+  const recipeSlug = route.params.recipe as string
 
-  return computed(() =>
-    getRecipe(route.params.category as string, route.params.recipe as string)
-  )
+  return useFetch<Recipe>(`/api/categories/${categorySlug}/recipes/${recipeSlug}`)
 }

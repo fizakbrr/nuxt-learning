@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const category = useCurrentCategory()
+const { data: category } = useCurrentCategory()
 const { isFavorite } = useFavorites()
 </script>
 

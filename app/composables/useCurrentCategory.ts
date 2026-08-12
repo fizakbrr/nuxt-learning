@@ -1,7 +1,6 @@
-// Combines useRoute() with useRecipes() so pages don't repeat the same lookup.
 export const useCurrentCategory = () => {
   const route = useRoute()
-  const { getCategory } = useRecipes()
+  const categorySlug = route.params.category as string
 
-  return computed(() => getCategory(route.params.category as string))
+  return useFetchWithCache<CategoryWithRecipes>(`/api/categories/${categorySlug}/recipes`)
 }
