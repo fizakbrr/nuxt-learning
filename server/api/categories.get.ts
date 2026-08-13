@@ -7,6 +7,7 @@ export default defineEventHandler(async (): Promise<CategoryMeta[]> => {
   return categories.map((category) => ({
     slug: category.slug,
     title: category.title,
-    recipeCount: category._count.recipes
+    recipeCount: category._count.recipes,
+    premium: category.premium
   }))
 })

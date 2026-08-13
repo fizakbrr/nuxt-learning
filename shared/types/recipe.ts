@@ -14,11 +14,13 @@ export interface CategoryMeta {
   slug: string
   title: string
   recipeCount: number
+  premium: boolean
 }
 
 export interface CategoryWithRecipes {
   slug: string
   title: string
+  premium: boolean
   recipes: RecipeSummary[]
 }
 

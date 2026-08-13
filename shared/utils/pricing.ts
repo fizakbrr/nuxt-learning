@@ -1,0 +1,2 @@
+export const PREMIUM_PRICE_CENTS = 1900
+export const PREMIUM_PRICE_DISPLAY = '$19.00'

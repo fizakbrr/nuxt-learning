@@ -2,6 +2,7 @@
   {
     "slug": "breakfast",
     "title": "Breakfast",
+    "premium": false,
     "recipes": [
       {
         "slug": "overnight-oats",
@@ -24,6 +25,7 @@
   {
     "slug": "dinner",
     "title": "Dinner",
+    "premium": false,
     "recipes": [
       {
         "slug": "garlic-butter-pasta",
@@ -46,6 +48,7 @@
   {
     "slug": "dessert",
     "title": "Dessert",
+    "premium": false,
     "recipes": [
       {
         "slug": "chocolate-mug-cake",
@@ -54,6 +57,29 @@
         "description": "A single-serving chocolate cake made in the microwave.",
         "ingredients": ["4 tbsp flour", "4 tbsp sugar", "2 tbsp cocoa powder", "1/4 tsp baking powder", "3 tbsp milk", "3 tbsp oil"],
         "steps": ["Mix dry ingredients in a mug", "Stir in milk and oil until smooth", "Microwave 90 seconds", "Let cool slightly before eating"]
+      }
+    ]
+  },
+  {
+    "slug": "chefs-secrets",
+    "title": "Chef's Secrets",
+    "premium": true,
+    "recipes": [
+      {
+        "slug": "brown-butter-sage-gnocchi",
+        "title": "Brown Butter Sage Gnocchi",
+        "cookTime": "25 min",
+        "description": "Pillowy gnocchi tossed in nutty brown butter with crispy sage leaves.",
+        "ingredients": ["500g potato gnocchi", "6 tbsp butter", "12 sage leaves", "1/4 cup parmesan", "salt and pepper"],
+        "steps": ["Boil gnocchi until they float, drain", "Melt butter in a pan until golden and nutty", "Fry sage leaves in the butter until crisp", "Toss gnocchi in the brown butter, top with parmesan and sage"]
+      },
+      {
+        "slug": "miso-caramel-tart",
+        "title": "Miso Caramel Tart",
+        "cookTime": "1 hr",
+        "description": "A rich caramel tart with a savory umami edge from white miso.",
+        "ingredients": ["1 pre-baked tart shell", "1 cup sugar", "6 tbsp butter", "1/2 cup cream", "2 tbsp white miso", "flaky salt"],
+        "steps": ["Melt sugar in a pan until deep amber", "Whisk in butter, then cream, off heat", "Stir in miso until smooth", "Pour into tart shell, chill until set, top with flaky salt"]
       }
     ]
   }

@@ -14,6 +14,7 @@ interface SeedRecipe {
 interface SeedCategory {
   slug: string
   title: string
+  premium: boolean
   recipes: SeedRecipe[]
 }
 

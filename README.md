@@ -79,6 +79,26 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **6-5 Add User Progress Endpoint** (here: fetch favorites): `server/api/favorites.get.ts` returns the flat list of a user's favorited recipes; the store's `initialize()` fetches it on startup and re-runs whenever `useSupabaseUser()` changes, so logging in or out mid-session still keeps favorites in sync without a page reload
 - **6-6 Show Course Completion Percentage** (here: recipes favorited): `app/pages/categories/[category]/index.vue` shows "X of Y favorited" per category, only when logged in, computed from data already fetched for the recipe list
 
+### Chapter 7 Building a Sales Page
+
+The course integrates real Stripe checkout. This app's payment step is mocked instead: no real processor, no real account, no real money. Stripe doesn't support QRIS and Indonesian merchant accounts are invite-only, and setting up a different real provider (Midtrans, Xendit) just to process fake test transactions on a solo learning project isn't worth the account overhead. The mock keeps the same architecture the course teaches (an async two-step checkout: create a pending purchase, then a separate call confirms it, mirroring how a real payment provider's webhook works) without any of that.
+
+- **7-1 Building the Sales Page**: `app/pages/index.vue`, hero, price, and Buy Now button for a new premium recipe category ("Chef's Secrets")
+- **7-2 Static Generation and Pre-Rendering**: `nuxt.config.ts` `routeRules['/'].prerender`
+- **7-3 Route Rules**: only `/` is prerendered, not the whole app, since categories and recipes stay dynamic and auth-gated, a full `nuxi generate` would break them
+- **7-4 Managing Static Assets**: no new assets needed for this landing page, so no change here
+- **7-5 Lazy Loading Checkout Components**: `app/components/CheckoutModal.vue` is rendered as `<LazyCheckoutModal>`, so it's not part of the initial page bundle
+- **7-6 Runtime Config and App Config**: no equivalent, there's no real API secret key to protect since the payment step is mocked
+- **7-7 Setting up Stripe**: no equivalent, no real payment provider account
+- **7-8 Handle Payments with Stripe**: `app/components/CheckoutModal.vue`'s Pay button calls `POST /api/checkout/mock-payment`
+- **7-9 Add the PaymentIntent Endpoint** (here: mock payment endpoint): `server/api/checkout/mock-payment.post.ts`, auth-guarded, creates a `Purchase` row (unverified) with a random `mockPaymentId`, price comes from `shared/utils/pricing.ts` so the client can't tamper with the amount
+- **7-10 Overview of Granting Access**: a `Purchase` row is created before confirmation, same ordering the course uses for its `CoursePurchase`
+- **7-11 Create CoursePurchase in the Database** (here: Purchase model): `Category.premium` and the `Purchase` model in `prisma/schema.prisma`
+- **7-12 Verify Purchase with Stripe Webhooks** (here: mock confirmation): `server/api/checkout/mock-payment/[id]/confirm.post.ts` marks `Purchase.verified = true`; not user-session-guarded, since a real payment webhook is a server-to-server callback authenticated by its own signature, not the shopper's browser session, the random `mockPaymentId` plays that role here
+- **7-13 Testing our Webhook Handler**: `app/components/CheckoutModal.vue` simulates the round trip itself (a short delay, then calls the confirm endpoint) instead of a separate CLI tool
+- **7-14 Link Purchase with Github**: no equivalent, this app requires GitHub login before reaching any gated content, so the `Purchase` row is tied to `userId` at creation instead of being linked to an account after the fact
+- **7-15 Grant Access to the Course** (here: premium recipes): `server/utils/hasPurchased.ts` and `server/api/purchase/status.get.ts` are the shared check; `app/middleware/premium.ts` uses it on the page side (stacked with `auth`), `server/api/categories/[category]/recipes/[recipe].get.ts` enforces the same check server-side
+
 ## Setup
 
 ```bash

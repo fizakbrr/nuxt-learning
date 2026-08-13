@@ -11,6 +11,7 @@ datasource db {
 model Category {
   slug    String   @id
   title   String
+  premium Boolean  @default(false)
   recipes Recipe[]
 }
 
@@ -37,4 +38,18 @@ model Favorite {
   recipe       Recipe   @relation(fields: [categorySlug, recipeSlug], references: [categorySlug, slug], onDelete: Cascade)
 
   @@unique([userId, categorySlug, recipeSlug])
+}
+
+// mockPaymentId stands in for a real processor's payment/order id.
+// One row per checkout attempt, no per-category FK: there's one premium product today.
+model Purchase {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  mockPaymentId String   @unique
+  amount        Int
+  currency      String
+  verified      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
 }

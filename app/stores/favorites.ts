@@ -4,7 +4,8 @@ export const useFavoritesStore = defineStore('favorites', () => {
   const favorited = ref(new Set<string>())
 
   const initialize = async () => {
-    const data = await $fetch<FavoriteRef[]>('/api/favorites')
+    const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
+    const data = await $fetch<FavoriteRef[]>('/api/favorites', { headers })
     favorited.value = new Set(data.map((f) => key(f.categorySlug, f.recipeSlug)))
   }
 
