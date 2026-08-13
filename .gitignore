@@ -6,6 +6,9 @@
 .cache
 dist
 
+# Netlify CLI (written by `netlify link`/`netlify init`)
+.netlify
+
 # Node dependencies
 node_modules
 

@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  nitro: {
+    // Explicit rather than relying on Netlify's build-image auto-detect,
+    // which doesn't always fire depending on how the build was triggered.
+    preset: 'netlify'
+  },
   modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt', '@nuxtjs/supabase', '@pinia/nuxt'],
   routeRules: {
     // The sales page has no per-user server-rendered data (login/purchase
