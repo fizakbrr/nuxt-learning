@@ -125,7 +125,11 @@ npm run dev
 
 ## Deploy to Netlify
 
-Nitro (Nuxt's server engine) detects Netlify automatically at build time, so no `netlify.toml` is needed. Push this repo to GitHub, connect it on [netlify.com](https://www.netlify.com/), and use:
+Push this repo to GitHub and connect it on [netlify.com](https://www.netlify.com/) with build command `npm run build`; no publish directory override needed.
 
-- Build command: `npm run build`
-- Netlify auto-detects the Nuxt output; no publish directory override needed
+Two things worth knowing, since they weren't obvious in practice:
+
+- `nuxt.config.ts` sets `nitro.preset` to `'netlify'` explicitly. Nitro is supposed to auto-detect Netlify at build time, but that detection didn't fire reliably depending on how the deploy was triggered, and without it the app silently builds with the default Node preset, which produces nothing Netlify can serve.
+- `prisma/schema.prisma`'s generator sets `binaryTargets = ["native", "rhel-openssl-3.0.x"]`. Building on a non-Linux machine only generates a Prisma query engine for that machine; Netlify Functions run on Linux, so without the extra target every database call 500s in production even though it works locally.
+- Set the same env vars from `.env.example` (`NUXT_PUBLIC_SUPABASE_URL`, `NUXT_PUBLIC_SUPABASE_KEY`, `DATABASE_URL`, `DIRECT_URL`) on the Netlify project too, or the deployed functions have nothing to connect to.
+- Add the deployed URL to Supabase's **Authentication → URL Configuration → Redirect URLs** so GitHub OAuth login works there, not just on `localhost`.
