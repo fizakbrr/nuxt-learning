@@ -21,3 +21,8 @@ export interface CategoryWithRecipes {
   title: string
   recipes: RecipeSummary[]
 }
+
+export interface FavoriteRef {
+  categorySlug: string
+  recipeSlug: string
+}

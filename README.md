@@ -70,6 +70,15 @@ Browse recipes by category, view ingredients/steps for each one, and save favori
 - **5-15 Auth and Server Routes**: the recipe endpoint calls `serverSupabaseUser(event)` and throws a 401 before touching the database if there's no session; kept as an inline check in that one handler rather than global server middleware, matching this project's existing "named/inline over global for a single route" pattern from chapter 4
 - **5-16 Understanding Nitro and h3**: no new code, `server/api/*.get.ts` files are h3 event handlers running on Nitro under the hood
 
+### Chapter 6 State Management with Pinia
+
+- **6-1 Setting up Pinia**: `@pinia/nuxt` registered in `nuxt.config.ts`
+- **6-2 Fixing the Meta Endpoint**: no regression to fix here, the chapter 5 endpoints didn't drop anything, so this lesson has no equivalent in this app
+- **6-3 Add LessonProgress Model to Our Schema** (here: a Favorite model): `prisma/schema.prisma`, `@@unique([userId, categorySlug, recipeSlug])` so a single upsert can update-or-create the row and existence checks stay one indexed lookup, the same reason the course gives for its `(user, lesson)` constraint
+- **6-4 Add Endpoint to Update Progress** (here: toggle favorite): `server/api/favorites/[category]/[recipe].put.ts` upserts on that unique key; `useFavoritesStore().toggleFavorite` in `app/stores/favorites.ts` updates the local state immediately and rolls back if the request fails, still surfaced through the existing `NuxtErrorBoundary` in `[recipe].vue`
+- **6-5 Add User Progress Endpoint** (here: fetch favorites): `server/api/favorites.get.ts` returns the flat list of a user's favorited recipes; the store's `initialize()` fetches it on startup and re-runs whenever `useSupabaseUser()` changes, so logging in or out mid-session still keeps favorites in sync without a page reload
+- **6-6 Show Course Completion Percentage** (here: recipes favorited): `app/pages/categories/[category]/index.vue` shows "X of Y favorited" per category, only when logged in, computed from data already fetched for the recipe list
+
 ## Setup
 
 ```bash

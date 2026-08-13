@@ -22,7 +22,19 @@ model Recipe {
   ingredients  String[]
   steps        String[]
   categorySlug String
-  category     Category @relation(fields: [categorySlug], references: [slug])
+  category     Category   @relation(fields: [categorySlug], references: [slug])
+  favorites    Favorite[]
 
   @@id([categorySlug, slug])
+}
+
+model Favorite {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  categorySlug String
+  recipeSlug   String
+  favorited    Boolean
+  recipe       Recipe   @relation(fields: [categorySlug, recipeSlug], references: [categorySlug, slug], onDelete: Cascade)
+
+  @@unique([userId, categorySlug, recipeSlug])
 }

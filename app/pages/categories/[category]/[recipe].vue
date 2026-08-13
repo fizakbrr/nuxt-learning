@@ -3,8 +3,12 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const route = useRoute()
+const categorySlug = route.params.category as string
+const recipeSlug = route.params.recipe as string
+
 const { data: recipe, error } = useCurrentRecipe()
-const { isFavorite, toggleFavorite } = useFavorites()
+const favoritesStore = useFavoritesStore()
 
 // 401 is handled by the auth middleware redirecting to /login before this
 // renders; this guard covers direct API errors (e.g. a 404 recipe slug).
@@ -30,9 +34,9 @@ useHead({ title: () => recipe.value?.title ?? 'Recipe' })
       <NuxtErrorBoundary>
         <button
           class="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
-          @click="toggleFavorite(recipe.slug)"
+          @click="favoritesStore.toggleFavorite(categorySlug, recipeSlug)"
         >
-          {{ isFavorite(recipe.slug) ? 'Remove favorite' : 'Save favorite' }}
+          {{ favoritesStore.isFavorite(categorySlug, recipeSlug) ? 'Remove favorite' : 'Save favorite' }}
         </button>
         <template #error="{ error, clearError }">
           <p class="text-sm text-red-600">
